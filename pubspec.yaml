@@ -1,6 +1,7 @@
-name: cocina_escolar
-description: Control de Vajilla Escolar con carnet y código de barras.
+name: restaurante_app
+description: "Aplicación móvil de gestión de restaurante Umami"
 publish_to: 'none'
+
 version: 1.0.0+1
 
 environment:
@@ -9,25 +10,25 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^1.2.0
-  google_fonts: ^6.2.1
-  cupertino_icons: ^1.0.6
-  mobile_scanner: ^3.5.0
+  http: ^1.1.0
+  image_picker: ^1.0.4
+  fl_chart: ^0.65.0
+  path_provider: ^2.1.1
+  open_filex: ^4.3.2
+  flutter_local_notifications: ^16.0.0
+  google_fonts: ^6.1.0 # Para tipografía moderna gastronómica
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^4.0.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_lints: ^3.0.0
 
 flutter:
   uses-material-design: true
-  assets:
-    - assets/icon/app_icon.png
 
-# Configuración del icono de la app
-flutter_launcher_icons:
-  android: true
-  ios: true
-  image_path: "assets/icon/app_icon.png"
-  min_sdk_android: 21
+  # Declaración de activos e imágenes
+  assets:
+    - assets/icon/fondoR.png
+    - assets/icon/UMAMI_Logo_transparente.png
+    - assets/icon/app_icon.png
+    - assets/icon/logo.png
