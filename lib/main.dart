@@ -17,7 +17,7 @@ import 'screens/cocina/cola_cocina_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Servidor en Railway — funciona desde cualquier red
+  // Servidor en Railway
   ApiClient.baseUrl = 'https://web-production-b4b0c8.up.railway.app';
 
   final restored = await Session.instance.restore();
@@ -72,7 +72,6 @@ class _Root extends StatelessWidget {
   }
 }
 
-/// AdminShell — usa selectedSection y onSectionSelected en lugar de child
 class AdminShell extends StatefulWidget {
   const AdminShell({super.key});
   @override
