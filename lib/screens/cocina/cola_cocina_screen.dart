@@ -7,11 +7,6 @@ import '../../widgets/chip_estado.dart';
 import '../../widgets/indicador_carga.dart';
 import '../../widgets/mensaje_error.dart';
 
-/// ============================================================
-///  ColaCocinaScreen — 3 columnas: Recibido / Preparando / Listo
-///  Cada tarjeta muestra número de mesa, items y timer.
-///  El cocinero arrastra o presiona botón para avanzar estado.
-/// ============================================================
 class ColaCocinaScreen extends StatefulWidget {
   const ColaCocinaScreen({super.key});
   @override
@@ -58,7 +53,9 @@ class _ColaCocinaScreenState extends State<ColaCocinaScreen> {
 
   List<OrdenModel> _filtrar(String estado) => _ordenes.where((o) => o.estado == estado).toList();
 
-  String _tiempoTranscurrido(DateTime fecha) {
+  String _tiempoTranscurrido(DateTime? fecha) {
+    // fecha es nullable — si viene null mostramos 'ahora'
+    if (fecha == null) return 'ahora';
     final diff = DateTime.now().difference(fecha);
     if (diff.inMinutes < 1) return 'ahora';
     if (diff.inMinutes < 60) return '${diff.inMinutes} min';
@@ -83,7 +80,6 @@ class _ColaCocinaScreenState extends State<ColaCocinaScreen> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // En teléfono: 1 columna scrollable; en tablet/desktop: 3 columnas
           final esTablet = constraints.maxWidth > 700;
           if (!esTablet) {
             return DefaultTabController(
@@ -110,7 +106,6 @@ class _ColaCocinaScreenState extends State<ColaCocinaScreen> {
               ),
             );
           }
-          // 3 columnas en tablet/desktop
           return Row(
             children: [
               Expanded(child: _buildColumna('Recibido', recibidas, AppColors.warning, Icons.play_arrow_rounded, 'preparando')),
@@ -177,6 +172,7 @@ class _ColaCocinaScreenState extends State<ColaCocinaScreen> {
             ...orden.detalles.take(3).map((d) => Text('• x${d.cantidad} Platillo #${d.platilloId}', style: AppTypography.caption)),
             if (orden.detalles.length > 3) Text('… +${orden.detalles.length - 3} más', style: AppTypography.caption),
             const SizedBox(height: AppSpacing.xs),
+            // fecha es DateTime? — se maneja con el método que acepta nullable
             Text(_tiempoTranscurrido(orden.fecha), style: AppTypography.caption.copyWith(color: AppColors.onSurfaceVariant)),
             if (accionIcon != null && siguiente != null) ...[
               const SizedBox(height: AppSpacing.sm),
