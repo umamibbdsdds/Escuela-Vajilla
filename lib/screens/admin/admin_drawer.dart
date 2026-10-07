@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../login_screen.dart';
 import '../../theme/app_theme.dart';
 import '../../core/session.dart';
-import '../../services/api_service.dart';
+import '../../services/auth_service.dart';
 
 /// ============================================================
 ///  AdminDrawer — Menú desplegable del panel de administración
@@ -23,7 +23,7 @@ enum AdminSection {
   estadisticas,
   exportar,
   historial,
-  reseñas,
+  resenas, // era reseñas — no se permiten caracteres no-ASCII en identificadores
 }
 
 class AdminDrawerOption {
@@ -59,7 +59,7 @@ const List<AdminDrawerOption> analysisOptions = [
 ];
 
 const List<AdminDrawerOption> reviewOptions = [
-  AdminDrawerOption(AdminSection.reseñas, 'Reseñas', Icons.star_rounded),
+  AdminDrawerOption(AdminSection.resenas, 'Reseñas', Icons.star_rounded),
 ];
 
 class AdminDrawer extends StatelessWidget {
@@ -90,17 +90,14 @@ class AdminDrawer extends StatelessWidget {
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-            // Cabecera
             _buildHeader(session, isWide: false),
             const Divider(height: 1),
-            // Secciones
             _sectionGroup('Operación', operationOptions),
             _sectionGroup('Menú', menuOptions),
             _sectionGroup('Restaurante', restaurantOptions),
             _sectionGroup('Análisis', analysisOptions),
             _sectionGroup('', reviewOptions),
             const Divider(height: 1),
-            // Cerrar sesión
             ListTile(
               leading: const Icon(Icons.logout_rounded, color: AppColors.error),
               title: Text('Cerrar sesión', style: AppTypography.body.copyWith(color: AppColors.error)),
@@ -114,7 +111,6 @@ class AdminDrawer extends StatelessWidget {
   }
 
   Widget _buildNavigationRail(BuildContext context, Session session) {
-    // En desktop/tablet usamos NavigationRail expandido
     return NavigationRail(
       selectedIndex: _sectionToIndex(selectedSection),
       onDestinationSelected: (i) => onSectionSelected(_indexToSection(i)),
