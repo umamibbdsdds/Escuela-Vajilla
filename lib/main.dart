@@ -18,7 +18,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   // Servidor en Railway
-  ApiClient.baseUrl = 'https://web-production-b4b0c8.up.railway.app';
+static const String baseUrl = 'https://web-production-b4b0c8.up.railway.app';
 
   final restored = await Session.instance.restore();
   runApp(UmamiApp(restoredSession: restored));
