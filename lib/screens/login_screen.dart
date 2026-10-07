@@ -61,16 +61,29 @@ class _LoginScreenState extends State<LoginScreen> {
 
   void _navegarSegunRol() {
     final rol = Session.instance.rol ?? 'invitado';
-      'administrador' => Navigator.pushReplacementNamed(context, '/admin'),
-      'mesero' => Navigator.pushReplacementNamed(context, '/mesero'),
-      'cocinero' => Navigator.pushReplacementNamed(context, '/cocina'),
-      'cliente' => Navigator.pushReplacementNamed(context, '/cliente'),
-      _ => Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => const MenuClienteScreen())),
+    switch (rol) {
+      case 'administrador':
+        Navigator.pushReplacementNamed(context, '/admin');
+        break;
+      case 'mesero':
+        Navigator.pushReplacementNamed(context, '/mesero');
+        break;
+      case 'cocinero':
+        Navigator.pushReplacementNamed(context, '/cocina');
+        break;
+      case 'cliente':
+        Navigator.pushReplacementNamed(context, '/cliente');
+        break;
+      default:
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const MenuClienteScreen()),
+        );
+    }
   }
 
   void _entrarComoInvitado() {
     Session.instance.logout();
-    // El invitado ve el menú sin sesión
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const MenuClienteScreen()),
@@ -96,7 +109,6 @@ class _LoginScreenState extends State<LoginScreen> {
       body: Stack(
         fit: StackFit.expand,
         children: [
-          // Fondo con imagen
           Positioned.fill(
             child: Image.asset(
               'assets/icon/fondoR.png',
@@ -104,11 +116,9 @@ class _LoginScreenState extends State<LoginScreen> {
               errorBuilder: (_, __, ___) => Container(color: AppColors.appBar),
             ),
           ),
-          // Capa oscura
           Positioned.fill(
             child: Container(color: AppColors.overlay),
           ),
-          // Contenido
           Center(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
@@ -116,7 +126,6 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const SizedBox(height: AppSpacing.xxl),
-                  // Logo
                   Image.asset(
                     'assets/icon/UMAMI_Logo_transparente.png',
                     height: 110,
@@ -127,7 +136,6 @@ class _LoginScreenState extends State<LoginScreen> {
                     style: AppTypography.overline.copyWith(color: Colors.white.withOpacity(0.85), letterSpacing: 2.0),
                   ),
                   const SizedBox(height: AppSpacing.xl),
-                  // Tarjeta glassmorphic
                   ClipRRect(
                     borderRadius: BorderRadius.circular(AppRadius.xl),
                     child: BackdropFilter(
@@ -145,7 +153,6 @@ class _LoginScreenState extends State<LoginScreen> {
                           children: [
                             Text('Iniciar Sesión', style: AppTypography.title.copyWith(color: Colors.white)),
                             const SizedBox(height: AppSpacing.xl),
-                            // Campo usuario
                             TextField(
                               controller: usuarioCtrl,
                               style: const TextStyle(color: Colors.white),
@@ -171,7 +178,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             const SizedBox(height: AppSpacing.md),
-                            // Campo clave
                             TextField(
                               controller: claveCtrl,
                               obscureText: _ocultarClave,
@@ -205,7 +211,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             const SizedBox(height: AppSpacing.xl),
-                            // Botón login
                             BotonPrimario(
                               texto: 'Ingresar',
                               icono: Icons.login_rounded,
@@ -213,7 +218,6 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: _validarYLogin,
                             ),
                             const SizedBox(height: AppSpacing.md),
-                            // Invitado
                             BotonSecundario(
                               texto: 'Ver menú como invitado',
                               icono: Icons.visibility_rounded,
