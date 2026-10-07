@@ -79,7 +79,8 @@ class _EstadisticasAdminScreenState extends State<EstadisticasAdminScreen> {
               )),
             )
           else
-            const Text('Sin datos de meseros', style: AppTypography.caption),
+            // Quitado 'const' — AppTypography.caption no es constante
+            Text('Sin datos de meseros', style: AppTypography.caption),
           const SizedBox(height: AppSpacing.xxl),
           EncabezadoSeccion(titulo: 'Estadísticas de clientes'),
           const SizedBox(height: AppSpacing.md),
@@ -115,7 +116,8 @@ class _EstadisticasAdminScreenState extends State<EstadisticasAdminScreen> {
               )),
             )
           else
-            const Text('Sin datos de clientes', style: AppTypography.caption),
+            // Quitado 'const' — AppTypography.caption no es constante
+            Text('Sin datos de clientes', style: AppTypography.caption),
         ],
       ),
     );
