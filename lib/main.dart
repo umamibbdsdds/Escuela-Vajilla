@@ -1,4 +1,4 @@
-import 'package:flutter/material.dart';
+import 'package0:flutter/material.dart';
 import 'theme/app_theme.dart';
 import 'core/session.dart';
 import 'services/api_client.dart';
@@ -17,8 +17,8 @@ import 'screens/cocina/cola_cocina_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Servidor en Railway
-static const String baseUrl = 'https://web-production-b4b0c8.up.railway.app';
+  // ✅ Asignamos la URL de Railway a la variable estática de tu ApiClient
+  ApiClient.baseUrl = 'https://web-production-b4b0c8.up.railway.app';
 
   final restored = await Session.instance.restore();
   runApp(UmamiApp(restoredSession: restored));
