@@ -26,8 +26,12 @@ class DetalleOrdenModel {
     platilloId: json['platillo_id'] as int? ?? json['platilloId'] as int? ?? 0,
     nombrePlatillo: json['nombre'] as String? ?? '',
     cantidad: json['cantidad'] as int? ?? 1,
-    precio: (json['precio'] is double) ? json['precio'] : double.tryParse(json['precio'].toString()) ?? 0.0,
-    subtotal: (json['subtotal'] is double) ? json['subtotal'] : double.tryParse(json['subtotal'].toString()) ?? 0.0,
+    precio: (json['precio'] is double)
+        ? json['precio']
+        : double.tryParse(json['precio'].toString()) ?? 0.0,
+    subtotal: (json['subtotal'] is double)
+        ? json['subtotal']
+        : double.tryParse(json['subtotal'].toString()) ?? 0.0,
     nota: json['nota'] as String? ?? '',
   );
 
@@ -45,7 +49,7 @@ class OrdenModel {
   final int id;
   final String? codigoPedido;
   final String? codigoEntrega;
-  final String estado;  // recibido, preparando, listo, entregado, cancelado
+  final String estado; // recibido, preparando, listo, entregado, cancelado
   final int? mesaId;
   final int? meseroId;
   final int? clienteId;
@@ -54,8 +58,8 @@ class OrdenModel {
   final String? canceladoPor;
   final String? motivoCancelacion;
   final DateTime? createdAt;
+  final DateTime? fecha; // alias de createdAt para compatibilidad con cola_cocina
   final List<DetalleOrdenModel> detalles;
-  // Extra info (no siempre viene del server)
   final int? mesaNumero;
   final String? meseroNombre;
 
@@ -72,6 +76,7 @@ class OrdenModel {
     this.canceladoPor,
     this.motivoCancelacion,
     this.createdAt,
+    this.fecha,
     this.detalles = const [],
     this.mesaNumero,
     this.meseroNombre,
@@ -79,13 +84,14 @@ class OrdenModel {
 
   factory OrdenModel.fromJson(Map<String, dynamic> json) {
     List<DetalleOrdenModel> detallesList = [];
-    if (json['detalles'] != null) {
-      if (json['detalles'] is List) {
-        detallesList = (json['detalles'] as List)
-            .map((d) => DetalleOrdenModel.fromJson(d as Map<String, dynamic>))
-            .toList();
-      }
+    if (json['detalles'] != null && json['detalles'] is List) {
+      detallesList = (json['detalles'] as List)
+          .map((d) => DetalleOrdenModel.fromJson(d as Map<String, dynamic>))
+          .toList();
     }
+    final creado = json['created_at'] != null
+        ? DateTime.tryParse(json['created_at'].toString())
+        : null;
     return OrdenModel(
       id: json['id'] as int,
       codigoPedido: json['codigo_pedido'] as String?,
@@ -94,11 +100,14 @@ class OrdenModel {
       mesaId: json['mesa_id'] as int?,
       meseroId: json['mesero_id'] as int?,
       clienteId: json['cliente_id'] as int?,
-      total: (json['total'] is double) ? json['total'] : double.tryParse(json['total'].toString()) ?? 0.0,
+      total: (json['total'] is double)
+          ? json['total']
+          : double.tryParse(json['total'].toString()) ?? 0.0,
       intentosCodigo: json['intentos_codigo'] as int? ?? 0,
       canceladoPor: json['cancelado_por'] as String?,
       motivoCancelacion: json['motivo_cancelacion'] as String?,
-      createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at'].toString()) : null,
+      createdAt: creado,
+      fecha: creado, // mismo valor, dos nombres
       detalles: detallesList,
       mesaNumero: json['mesa_numero'] as int?,
       meseroNombre: json['mesero_nombre'] as String?,
@@ -119,7 +128,7 @@ class OrdenModel {
 class MesaModel {
   final int id;
   final int numero;
-  final String estado; // libre, ordenando, en_cocina, lista, cuenta_pedida, pagada
+  final String estado;
   final int? meseroId;
   final String? meseroNombre;
   final int pedidosActivos;
@@ -172,6 +181,8 @@ class AlertaModel {
     mesaId: json['mesa_id'] as int?,
     ordenId: json['orden_id'] as int?,
     mesaNumero: json['mesa_numero'] as int?,
-    createdAt: json['created_at'] != null ? DateTime.tryParse(json['created_at'].toString()) : null,
+    createdAt: json['created_at'] != null
+        ? DateTime.tryParse(json['created_at'].toString())
+        : null,
   );
 }
