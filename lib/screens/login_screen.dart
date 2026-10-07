@@ -1,20 +1,14 @@
-import 'package:flutter/material.dart';
 import 'dart:ui';
+import 'package:flutter/material.dart';
 import '../theme/app_theme.dart';
 import '../core/session.dart';
 import '../services/auth_service.dart';
 import '../services/api_client.dart';
-import '../widgets/campo_texto.dart';
-import '../widgets/boton_primario.dart';
-import '../widgets/boton_secundario.dart';
-import 'admin/admin_drawer.dart';
 import 'cliente/menu_cliente_screen.dart';
 
-/// ============================================================
-///  LoginScreen — Glassmorphism profesional con validación
-/// ============================================================
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
+
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
@@ -96,7 +90,7 @@ class _LoginScreenState extends State<LoginScreen> {
         content: Text(texto),
         behavior: SnackBarBehavior.floating,
         backgroundColor: AppColors.error,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppRadius.md)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
     );
   }
@@ -106,130 +100,233 @@ class _LoginScreenState extends State<LoginScreen> {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
+      backgroundColor: Colors.black,
       body: Stack(
         fit: StackFit.expand,
         children: [
+          // 1. FONDO R (assets/icon/fondoR.png)
           Positioned.fill(
             child: Image.asset(
               'assets/icon/fondoR.png',
               fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(color: AppColors.appBar),
             ),
           ),
+          
+          // Capa oscura de sobreposición
           Positioned.fill(
-            child: Container(color: AppColors.overlay),
+            child: Container(
+              color: Colors.black.withOpacity(0.40),
+            ),
           ),
+
+          // 2. CONTENIDO PRINCIPAL CON LOGO Y FORMULARIO
           Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg),
+              padding: const EdgeInsets.symmetric(horizontal: 24.0),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  const SizedBox(height: AppSpacing.xxl),
+                  const SizedBox(height: 40),
+
+                  // LOGO TRANSPARENTE (assets/icon/UMAMI_Logo_transparente.png)
                   Image.asset(
                     'assets/icon/UMAMI_Logo_transparente.png',
-                    height: 110,
-                    errorBuilder: (_, __, ___) => const Icon(Icons.restaurant_rounded, size: 80, color: AppColors.primaryLight),
+                    height: 125,
                   ),
-                  const SizedBox(height: AppSpacing.sm),
-                  Text('GESTIÓN DE RESTAURANTES',
-                    style: AppTypography.overline.copyWith(color: Colors.white.withOpacity(0.85), letterSpacing: 2.0),
+                  const SizedBox(height: 10),
+
+                  // Subtítulo
+                  Text(
+                    'GESTIÓN DE RESTAURANTES',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.9),
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 2.2,
+                    ),
                   ),
-                  const SizedBox(height: AppSpacing.xl),
+                  const SizedBox(height: 28),
+
+                  // Tarjeta Glassmorphism
                   ClipRRect(
-                    borderRadius: BorderRadius.circular(AppRadius.xl),
+                    borderRadius: BorderRadius.circular(20),
                     child: BackdropFilter(
-                      filter: ImageFilter.blur(sigmaX: 14, sigmaY: 14),
+                      filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
                       child: Container(
-                        width: size.width > 500 ? 420 : size.width * 0.9,
-                        padding: const EdgeInsets.all(AppSpacing.xl),
+                        width: size.width > 480 ? 390 : size.width * 0.88,
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 22.0,
+                          vertical: 28.0,
+                        ),
                         decoration: BoxDecoration(
-                          color: Colors.white.withOpacity(0.12),
-                          borderRadius: BorderRadius.circular(AppRadius.xl),
-                          border: Border.all(color: Colors.white.withOpacity(0.18), width: 1),
+                          color: Colors.black.withOpacity(0.28),
+                          borderRadius: BorderRadius.circular(20),
+                          border: Border.all(
+                            color: Colors.white.withOpacity(0.15),
+                            width: 1,
+                          ),
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text('Iniciar Sesión', style: AppTypography.title.copyWith(color: Colors.white)),
-                            const SizedBox(height: AppSpacing.xl),
+                            // Campo Usuario
                             TextField(
                               controller: usuarioCtrl,
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white, fontSize: 14),
                               decoration: InputDecoration(
-                                labelText: 'Usuario',
-                                labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
-                                prefixIcon: Icon(Icons.person_rounded, color: Colors.white.withOpacity(0.7)),
+                                hintText: 'Usuario',
+                                hintStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.55),
+                                  fontSize: 13,
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.person_outline_rounded,
+                                  color: Colors.white.withOpacity(0.65),
+                                  size: 20,
+                                ),
                                 errorText: _errorUsuario,
                                 filled: true,
-                                fillColor: Colors.white.withOpacity(0.08),
+                                fillColor: Colors.white.withOpacity(0.06),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 14),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.md),
-                                  borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Colors.white.withOpacity(0.25),
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.md),
-                                  borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Colors.white.withOpacity(0.25),
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.md),
-                                  borderSide: const BorderSide(color: AppColors.primaryLight, width: 2),
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Colors.orangeAccent,
+                                    width: 1.5,
+                                  ),
                                 ),
                               ),
                             ),
-                            const SizedBox(height: AppSpacing.md),
+                            const SizedBox(height: 16),
+
+                            // Campo Contraseña
                             TextField(
                               controller: claveCtrl,
                               obscureText: _ocultarClave,
-                              style: const TextStyle(color: Colors.white),
+                              style: const TextStyle(color: Colors.white, fontSize: 14),
                               decoration: InputDecoration(
-                                labelText: 'Contraseña',
-                                labelStyle: TextStyle(color: Colors.white.withOpacity(0.7)),
-                                prefixIcon: Icon(Icons.lock_rounded, color: Colors.white.withOpacity(0.7)),
+                                hintText: 'Contraseña',
+                                hintStyle: TextStyle(
+                                  color: Colors.white.withOpacity(0.55),
+                                  fontSize: 13,
+                                ),
+                                prefixIcon: Icon(
+                                  Icons.lock_outline_rounded,
+                                  color: Colors.white.withOpacity(0.65),
+                                  size: 20,
+                                ),
                                 suffixIcon: IconButton(
                                   icon: Icon(
-                                    _ocultarClave ? Icons.visibility_off_rounded : Icons.visibility_rounded,
-                                    color: Colors.white.withOpacity(0.7),
+                                    _ocultarClave
+                                        ? Icons.visibility_off_outlined
+                                        : Icons.visibility_outlined,
+                                    color: Colors.white.withOpacity(0.65),
+                                    size: 20,
                                   ),
                                   onPressed: () => setState(() => _ocultarClave = !_ocultarClave),
                                 ),
                                 errorText: _errorClave,
                                 filled: true,
-                                fillColor: Colors.white.withOpacity(0.08),
+                                fillColor: Colors.white.withOpacity(0.06),
+                                contentPadding: const EdgeInsets.symmetric(vertical: 14),
                                 border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.md),
-                                  borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Colors.white.withOpacity(0.25),
+                                  ),
                                 ),
                                 enabledBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.md),
-                                  borderSide: BorderSide(color: Colors.white.withOpacity(0.2)),
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: BorderSide(
+                                    color: Colors.white.withOpacity(0.25),
+                                  ),
                                 ),
                                 focusedBorder: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(AppRadius.md),
-                                  borderSide: const BorderSide(color: AppColors.primaryLight, width: 2),
+                                  borderRadius: BorderRadius.circular(12),
+                                  borderSide: const BorderSide(
+                                    color: Colors.orangeAccent,
+                                    width: 1.5,
+                                  ),
                                 ),
                               ),
                             ),
-                            const SizedBox(height: AppSpacing.xl),
-                            BotonPrimario(
-                              texto: 'Ingresar',
-                              icono: Icons.login_rounded,
-                              cargando: _cargando,
-                              onPressed: _validarYLogin,
+                            const SizedBox(height: 24),
+
+                            // Botón Iniciar Sesión (Naranja)
+                            SizedBox(
+                              width: double.infinity,
+                              height: 46,
+                              child: ElevatedButton(
+                                onPressed: _cargando ? null : _validarYLogin,
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: const Color(0xFFFF6600),
+                                  foregroundColor: Colors.white,
+                                  elevation: 0,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                ),
+                                child: _cargando
+                                    ? const SizedBox(
+                                        height: 20,
+                                        width: 20,
+                                        child: CircularProgressIndicator(
+                                          strokeWidth: 2,
+                                          color: Colors.white,
+                                        ),
+                                      )
+                                    : const Text(
+                                        'Iniciar Sesión',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                              ),
                             ),
-                            const SizedBox(height: AppSpacing.md),
-                            BotonSecundario(
-                              texto: 'Ver menú como invitado',
-                              icono: Icons.visibility_rounded,
-                              onPressed: _entrarComoInvitado,
-                              color: Colors.white.withOpacity(0.7),
+                            const SizedBox(height: 18),
+
+                            // Enlace secundario
+                            GestureDetector(
+                              onTap: _entrarComoInvitado,
+                              child: Text(
+                                'Explorar Menú sin Iniciar Sesión →',
+                                style: TextStyle(
+                                  color: Colors.amber[300],
+                                  fontSize: 12,
+                                  fontWeight: FontWeight.w500,
+                                ),
+                              ),
                             ),
                           ],
                         ),
                       ),
                     ),
                   ),
-                  const SizedBox(height: AppSpacing.xxl),
+
+                  const SizedBox(height: 28),
+
+                  // Pie de página
+                  Text(
+                    'Powered by Flutter',
+                    style: TextStyle(
+                      color: Colors.white.withOpacity(0.4),
+                      fontSize: 10,
+                    ),
+                  ),
+                  const SizedBox(height: 20),
                 ],
               ),
             ),
