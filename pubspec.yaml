@@ -26,4 +26,7 @@ dev_dependencies:
 flutter:
   uses-material-design: true
   assets:
-    - assets/
+    - assets/icon/UMAMI_Logo_transparente.png
+    - assets/icon/fondoR.png
+    - assets/icon/app_icon.png
+    - assets/icon/logo.png
