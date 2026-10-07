@@ -10,10 +10,6 @@ import '../../widgets/tarjeta_platillo.dart';
 import '../../widgets/boton_primario.dart';
 import '../../widgets/campo_texto.dart';
 
-/// ============================================================
-///  RegistroPlatilloScreen — CRUD de platillos (admin)
-///  Migrada del main.dart original al nuevo tema
-/// ============================================================
 class RegistroPlatilloScreen extends StatefulWidget {
   const RegistroPlatilloScreen({super.key});
   @override
@@ -22,7 +18,7 @@ class RegistroPlatilloScreen extends StatefulWidget {
 
 class _RegistroPlatilloScreenState extends State<RegistroPlatilloScreen> {
   List<dynamic> _platillos = [];
-  List<String> _categorias = [];
+  List<dynamic> _categorias = []; // era List<String>, cambiado a List<dynamic>
   bool _cargando = true;
   String? _error;
 
@@ -79,7 +75,6 @@ class _RegistroPlatilloScreenState extends State<RegistroPlatilloScreen> {
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Row(
           children: [
-            // Imagen
             ClipRRect(
               borderRadius: BorderRadius.circular(AppRadius.md),
               child: p['imagen'] != null && p['imagen'].toString().isNotEmpty
@@ -89,7 +84,6 @@ class _RegistroPlatilloScreenState extends State<RegistroPlatilloScreen> {
                 : _placeholder(),
             ),
             const SizedBox(width: AppSpacing.md),
-            // Info
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,11 +94,9 @@ class _RegistroPlatilloScreenState extends State<RegistroPlatilloScreen> {
                 ],
               ),
             ),
-            // Precio
             Text('\$${(double.tryParse(p['precio']?.toString() ?? '0') ?? 0).toStringAsFixed(2)}',
               style: AppTypography.subtitleWith(AppColors.primary)),
             const SizedBox(width: AppSpacing.sm),
-            // Toggle disponible
             Switch.adaptive(
               value: disponible,
               activeColor: AppColors.success,
@@ -119,7 +111,6 @@ class _RegistroPlatilloScreenState extends State<RegistroPlatilloScreen> {
                 }
               },
             ),
-            // Acciones
             IconButton(
               icon: const Icon(Icons.edit_rounded, size: 20),
               onPressed: () => _mostrarDialogoEditar(p),
@@ -140,7 +131,6 @@ class _RegistroPlatilloScreenState extends State<RegistroPlatilloScreen> {
     child: const Icon(Icons.fastfood_rounded, color: AppColors.primaryLight, size: 24),
   );
 
-  // ==================== DIÁLOGO CREAR ====================
   void _mostrarDialogoCrear({Map<String, dynamic>? existente}) {
     final nombreCtrl = TextEditingController(text: existente?['nombre'] ?? '');
     final descCtrl = TextEditingController(text: existente?['descripcion'] ?? '');
@@ -167,7 +157,7 @@ class _RegistroPlatilloScreenState extends State<RegistroPlatilloScreen> {
                 DropdownButtonFormField<String>(
                   value: categoria,
                   decoration: const InputDecoration(labelText: 'Categoría'),
-                  items: _categorias.map((c) => DropdownMenuItem(value: c, child: Text(c))).toList()
+                  items: _categorias.map((c) => DropdownMenuItem(value: c.toString(), child: Text(c.toString()))).toList()
                     ..add(const DropdownMenuItem(value: 'Platos Fuertes', child: Text('Platos Fuertes'))),
                   onChanged: (v) => setState(() => categoria = v),
                 ),
