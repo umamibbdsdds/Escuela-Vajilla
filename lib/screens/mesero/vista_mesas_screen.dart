@@ -67,7 +67,8 @@ class _VistaMesasScreenState extends State<VistaMesasScreen> {
       body: RefreshIndicator(
         onRefresh: _cargar,
         child: _mesas.isEmpty
-            ? const Center(child: Text('No tienes mesas asignadas', style: AppTypography.body))
+            // Quitado 'const' — AppTypography.body no es constante
+            ? Center(child: Text('No tienes mesas asignadas', style: AppTypography.body))
             : GridView.builder(
                 padding: const EdgeInsets.all(AppSpacing.lg),
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
