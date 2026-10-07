@@ -3,45 +3,39 @@ import '../core/session.dart';
 
 /// ============================================================
 ///  PollingService — Timer.periodic genérico a 5 s
-///  Preparado para migrar a WebSocket sin cambiar la UI
+///  API estática para usarse como PollingService.start() y .stop()
 /// ============================================================
 
-typedef PollCallback = Future<void> Function();
+typedef PollCallback = Future<void> Function(Timer);
 
 class PollingService {
   static const Duration interval = Duration(seconds: 5);
-  Timer? _timer;
-  PollCallback? _callback;
-  bool _running = false;
+  static Timer? _timer;
+  static bool _running = false;
 
-  bool get isRunning => _running;
+  static bool get isRunning => _running;
 
-  void start(PollCallback callback) {
+  /// Inicia el polling. segundos: intervalo, callback: función a ejecutar
+  static void start(int segundos, void Function(Timer) callback) {
     if (_running) return;
-    _callback = callback;
     _running = true;
-    // Ejecutar inmediatamente, luego cada 5 s
-    _callback?.call();
-    _timer = Timer.periodic(interval, (_) {
-      if (Session().isLoggedIn || Session().isInvitado) {
-        _callback?.call();
+    // Ejecutar inmediatamente al inicio
+    callback(Timer(Duration.zero, () {}));
+    _timer = Timer.periodic(Duration(seconds: segundos), (t) {
+      if (Session.instance.isLoggedIn || Session.instance.isInvitado) {
+        callback(t);
       }
     });
   }
 
-  void stop() {
+  static void stop() {
     _timer?.cancel();
     _timer = null;
     _running = false;
   }
 
-  void restart(PollCallback callback) {
+  static void restart(int segundos, void Function(Timer) callback) {
     stop();
-    start(callback);
-  }
-
-  void dispose() {
-    stop();
-    _callback = null;
+    start(segundos, callback);
   }
 }
