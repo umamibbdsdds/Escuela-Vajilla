@@ -3,7 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 /// ============================================================
 ///  AppTheme — Tema centralizado UMAMI
-///  Ninguna pantalla debe definir colores o estilos sueltos.
 /// ============================================================
 
 class AppColors {
@@ -28,14 +27,18 @@ class AppColors {
   static const Color textOnDark = Colors.white;
 
   // Estados semánticos
-  static const Color success = Color(0xFF2E7D32);      // listo / pagada
-  static const Color warning = Color(0xFFF57F17);      // preparando
-  static const Color info = Color(0xFF1565C0);          // recibido
-  static const Color error = Color(0xFFC62828);         // alerta / cancelado
-  static const Color neutral = Color(0xFF9E9E9E);       // libre
-  static const Color cuentaPedida = Color(0xFF6A1B9A); // cuenta_pedida
+  static const Color success = Color(0xFF2E7D32);
+  static const Color warning = Color(0xFFF57F17);
+  static const Color info = Color(0xFF1565C0);
+  static const Color error = Color(0xFFC62828);
+  static const Color neutral = Color(0xFF9E9E9E);
+  static const Color cuentaPedida = Color(0xFF6A1B9A);
 
-  // Estados de mesa (mapeo directo)
+  // Bordes y variantes — faltaban estos, causaban error en pantallas
+  static const Color outline = Color(0xFFD6CFC7);
+  static const Color onSurfaceVariant = Color(0xFF757575);
+
+  // Estados de mesa
   static const Color mesaLibre = neutral;
   static const Color mesaOrdenando = info;
   static const Color mesaEnCocina = warning;
@@ -44,7 +47,7 @@ class AppColors {
   static const Color mesaPagada = Color(0xFF4CAF50);
 
   // Overlay
-  static const Color overlay = Color(0xB3000000); // 70% negro
+  static const Color overlay = Color(0xB3000000);
 
   // Modo oscuro
   static const Color darkBackground = Color(0xFF121212);
@@ -106,7 +109,6 @@ class AppTypography {
     fontSize: 10, fontWeight: FontWeight.w600, letterSpacing: 1.5, color: AppColors.textSecondary,
   );
 
-  // Variantes con color personalizado
   static TextStyle headlineWith(Color c) => GoogleFonts.poppins(fontSize: 24, fontWeight: FontWeight.w700, color: c);
   static TextStyle titleWith(Color c) => GoogleFonts.poppins(fontSize: 20, fontWeight: FontWeight.w600, color: c);
   static TextStyle subtitleWith(Color c) => GoogleFonts.poppins(fontSize: 16, fontWeight: FontWeight.w500, color: c);
@@ -202,10 +204,13 @@ class AppTheme {
       type: BottomNavigationBarType.fixed,
       elevation: 8,
     ),
-    navigationRailTheme: NavigationRailThemeData(
+    // Quitado selectedItemColor que no existe en NavigationRailThemeData
+    navigationRailTheme: const NavigationRailThemeData(
       backgroundColor: AppColors.surface,
-      selectedItemColor: AppColors.primary,
-      unselectedItemColor: AppColors.textSecondary,
+      unselectedLabelTextStyle: TextStyle(color: AppColors.textSecondary),
+      selectedLabelTextStyle: TextStyle(color: AppColors.primary),
+      unselectedIconTheme: IconThemeData(color: AppColors.textSecondary),
+      selectedIconTheme: IconThemeData(color: AppColors.primary),
       elevation: 0,
     ),
     snackBarTheme: SnackBarThemeData(
@@ -250,7 +255,6 @@ class AppTheme {
     ),
   );
 
-  // Utilidad: color según estado de orden
   static Color estadoOrdenColor(String estado) {
     switch (estado) {
       case 'recibido': return AppColors.info;
@@ -262,7 +266,6 @@ class AppTheme {
     }
   }
 
-  // Utilidad: color según estado de mesa
   static Color estadoMesaColor(String estado) {
     switch (estado) {
       case 'libre': return AppColors.mesaLibre;
@@ -275,7 +278,6 @@ class AppTheme {
     }
   }
 
-  // Utilidad: ícono según estado de orden
   static IconData estadoOrdenIcon(String estado) {
     switch (estado) {
       case 'recibido': return Icons.receipt_long_rounded;
@@ -287,7 +289,6 @@ class AppTheme {
     }
   }
 
-  // Utilidad: ícono según estado de mesa
   static IconData estadoMesaIcon(String estado) {
     switch (estado) {
       case 'libre': return Icons.table_restaurant_rounded;
@@ -300,7 +301,6 @@ class AppTheme {
     }
   }
 
-  // Utilidad: label legible de estado de orden
   static String estadoOrdenLabel(String estado) {
     switch (estado) {
       case 'recibido': return 'Recibido';
@@ -312,7 +312,6 @@ class AppTheme {
     }
   }
 
-  // Utilidad: label legible de estado de mesa
   static String estadoMesaLabel(String estado) {
     switch (estado) {
       case 'libre': return 'Libre';
